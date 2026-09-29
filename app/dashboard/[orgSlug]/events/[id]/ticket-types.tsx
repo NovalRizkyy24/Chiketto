@@ -107,7 +107,7 @@ function TicketTypeForm({
           name="studentOnly"
           type="checkbox"
           defaultChecked={state.values ? state.values.studentOnly === "on" : tt?.studentOnly}
-          className="size-5 accent-[var(--color-ink)]"
+          className="size-5 accent-ink"
         />
         <span>Khusus mahasiswa terverifikasi</span>
       </label>
@@ -172,7 +172,7 @@ export function TicketTypeManager({ orgSlug, eventId, types, disabled, defaults 
       <ul className="border-t border-rule">
         {visible.map((t) => (
           <li key={t.id} className="border-b border-rule">
-            <div className="flex min-h-[56px] flex-wrap items-center justify-between gap-4 py-3">
+            <div className="flex min-h-14 flex-wrap items-center justify-between gap-4 py-3">
               <div className="min-w-0">
                 <p className="font-medium break-anywhere">
                   {t.name}
@@ -218,7 +218,7 @@ export function TicketTypeManager({ orgSlug, eventId, types, disabled, defaults 
       {snack ? (
         <div
           role="status"
-          className="fixed inset-x-5 bottom-[max(20px,env(safe-area-inset-bottom))] z-30 mx-auto flex max-w-[480px] items-center justify-between gap-4 bg-ink px-5 py-3 text-paper"
+          className="fixed inset-x-5 bottom-[max(20px,env(safe-area-inset-bottom))] z-30 mx-auto flex max-w-120 items-center justify-between gap-4 bg-ink px-5 py-3 text-paper"
         >
           <span>Jenis tiket dihapus</span>
           <button type="button" onClick={undo} className="min-h-11 font-bold underline underline-offset-4">

@@ -18,7 +18,7 @@ function EventChecks({ events, checked }: { events: Ev[]; checked?: string[] }) 
             name="eventIds"
             value={e.id}
             defaultChecked={checked?.includes(e.id)}
-            className="size-5 accent-[var(--color-ink)]"
+            className="size-5 accent-ink"
           />
           <span className="break-anywhere">{e.title}</span>
         </label>
@@ -35,7 +35,7 @@ export function InviteForm({ orgSlug, events }: { orgSlug: string; events: Ev[] 
   }, [state.savedAt, state.ok]);
 
   return (
-    <form ref={form} action={action} className="mt-4 flex max-w-[480px] flex-col gap-4">
+    <form ref={form} action={action} className="mt-4 flex max-w-120 flex-col gap-4">
       <label className="field">
         <span className="label">Email panitia</span>
         <input

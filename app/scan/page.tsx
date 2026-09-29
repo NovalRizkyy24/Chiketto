@@ -21,10 +21,10 @@ export default async function ScanIndexPage() {
           Kamu belum ditugaskan ke event mana pun. Minta penyelenggara menambahkan email kamu sebagai panitia.
         </p>
       ) : (
-        <ul className="mt-8 max-w-[640px] border-t border-rule">
+        <ul className="mt-8 max-w-160 border-t border-rule">
           {events.map((e) => (
             <li key={e.id} className="border-b border-rule">
-              <Link href={`/scan/${e.id}`} className="flex min-h-[72px] flex-col justify-center py-4 hover:bg-paper-2">
+              <Link href={`/scan/${e.id}`} className="flex min-h-18 flex-col justify-center py-4 hover:bg-paper-2">
                 <span className="text-lg font-medium break-anywhere">{e.title}</span>
                 <span className="text-sm text-ink-3">
                   {formatDateLong(e.startsAt, e.org.campus.timezone)} · {e.venue}

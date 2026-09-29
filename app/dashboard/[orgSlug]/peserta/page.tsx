@@ -77,7 +77,7 @@ export default async function AttendeesPage({ params, searchParams }: Props) {
           </div>
 
           <div className="mt-4 overflow-x-auto">
-            <table className="w-full min-w-[640px] text-sm">
+            <table className="w-full min-w-160 text-sm">
               <thead className="text-left text-ink-3">
                 <tr className="border-b border-rule">
                   <th className="py-2 font-normal">Nama</th>

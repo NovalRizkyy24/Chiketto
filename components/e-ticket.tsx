@@ -16,7 +16,7 @@ export type ETicketData = {
 export function Hanko({ time }: { time: string }) {
   return (
     <div
-      className="hanko pointer-events-none flex size-[72px] flex-col items-center justify-center rounded-full border-2 border-accent font-mono font-medium leading-tight text-accent"
+      className="hanko pointer-events-none flex size-18 flex-col items-center justify-center rounded-full border-2 border-accent font-mono font-medium leading-tight text-accent"
       aria-label={`Sudah masuk pukul ${time}`}
       role="img"
     >
@@ -56,7 +56,7 @@ export function ETicket({ t, pdfHref }: { t: ETicketData; pdfHref?: string }) {
       <div className="order-first flex flex-col items-center gap-3 border-b border-dashed border-rule-strong p-6 md:order-last md:w-64 md:border-b-0 md:border-l">
         {t.svg && !isVoid ? (
           <div
-            className={`w-[216px] bg-[var(--color-qr-surface)] p-2 [&>svg]:block [&>svg]:h-auto [&>svg]:w-full ${checkedIn ? "opacity-60" : ""}`}
+            className={`w-54 bg-(--color-qr-surface) p-2 [&>svg]:block [&>svg]:h-auto [&>svg]:w-full ${checkedIn ? "opacity-60" : ""}`}
             role="img"
             aria-label={`Kode QR tiket ${t.code}`}
             dangerouslySetInnerHTML={{ __html: t.svg }}

@@ -89,7 +89,7 @@ export function TicketPicker(p: Props) {
           return (
             <li key={t.id} className="border-b border-rule py-5">
               <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-                <div className="min-w-[9rem] flex-1 [overflow-wrap:anywhere]">
+                <div className="min-w-36 flex-1 wrap-anywhere">
                   <p className={`font-medium ${buyable ? "" : "text-ink-3"}`}>{t.name}</p>
                   <p className="text-sm text-ink-3">{t.note}</p>
                 </div>

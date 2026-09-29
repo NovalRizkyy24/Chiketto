@@ -34,7 +34,7 @@ export default async function MyTicketsPage() {
           <ul className="mt-4 border-t border-rule">
             {pending.map((o) => (
               <li key={o.id} className="border-b border-rule">
-                <Link href={`/checkout/${o.code}`} className="flex min-h-[56px] items-center justify-between gap-4 py-3 hover:bg-paper-2">
+                <Link href={`/checkout/${o.code}`} className="flex min-h-14 items-center justify-between gap-4 py-3 hover:bg-paper-2">
                   <span className="break-anywhere">{o.event.title}</span>
                   <span className="shrink-0 whitespace-nowrap font-mono text-sm text-ink-3">{o.code}</span>
                 </Link>
@@ -56,7 +56,7 @@ export default async function MyTicketsPage() {
             </Link>
           </p>
         ) : (
-          <div className="mt-6 flex max-w-[760px] flex-col gap-10">
+          <div className="mt-6 flex max-w-190 flex-col gap-10">
             {active.map((t) => (
               <ETicket key={t.id} t={t} pdfHref={`/api/tickets/${t.code}/pdf`} />
             ))}
@@ -70,7 +70,7 @@ export default async function MyTicketsPage() {
             Riwayat
           </h2>
           {/* Riwayat ringkas: QR event yang sudah lewat tidak berguna, jadi tidak ditampilkan. */}
-          <ul className="mt-4 max-w-[760px] border-t border-rule">
+          <ul className="mt-4 max-w-190 border-t border-rule">
             {history.map((t) => {
               const tz = t.event.org.campus.timezone;
               const status =

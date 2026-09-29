@@ -34,7 +34,7 @@ export default async function OrgEventsPage({ params }: { params: Promise<{ orgS
               <li key={e.id} className="border-b border-rule">
                 <Link
                   href={`/dashboard/${orgSlug}/events/${e.id}`}
-                  className="grid min-h-[72px] gap-1 py-4 hover:bg-paper-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6"
+                  className="grid min-h-18 gap-1 py-4 hover:bg-paper-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6"
                 >
                   <span className="min-w-0">
                     <span className="block font-medium break-anywhere">{e.title}</span>

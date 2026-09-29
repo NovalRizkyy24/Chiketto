@@ -27,17 +27,17 @@ export default async function DashboardIndex() {
           </Link>
         </p>
       ) : (
-        <ul className="mt-8 max-w-[640px] border-t border-rule">
+        <ul className="mt-8 max-w-160 border-t border-rule">
           {user.isPlatformAdmin ? (
             <li className="border-b border-rule">
-              <Link href="/admin" className="flex min-h-[56px] items-center hover:bg-paper-2">
+              <Link href="/admin" className="flex min-h-14 items-center hover:bg-paper-2">
                 Admin platform
               </Link>
             </li>
           ) : null}
           {orgs.map((o) => (
             <li key={o.id} className="border-b border-rule">
-              <Link href={`/dashboard/${o.slug}`} className="flex min-h-[56px] items-center hover:bg-paper-2">
+              <Link href={`/dashboard/${o.slug}`} className="flex min-h-14 items-center hover:bg-paper-2">
                 {o.name}
               </Link>
             </li>

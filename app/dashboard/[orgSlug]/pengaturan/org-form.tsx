@@ -7,7 +7,7 @@ import { updateOrgAction, type FormState } from "../actions";
 export function OrgForm({ orgSlug, name }: { orgSlug: string; name: string }) {
   const [state, action] = useActionState<FormState, FormData>(updateOrgAction.bind(null, orgSlug), {});
   return (
-    <form action={action} className="mt-8 flex max-w-[480px] flex-col gap-4">
+    <form action={action} className="mt-8 flex max-w-120 flex-col gap-4">
       <label className="field">
         <span className="label">Nama organisasi</span>
         <input

@@ -60,7 +60,7 @@ export default async function EventDashboardPage({ params }: { params: Promise<{
           <p className="mt-3 text-sm text-ink-3">Belum ada jenis tiket.</p>
         ) : (
           <div className="mt-4 overflow-x-auto">
-            <table className="w-full min-w-[520px] text-sm">
+            <table className="w-full min-w-130 text-sm">
               <thead className="text-left text-ink-3">
                 <tr className="border-b border-rule">
                   <th className="py-2 font-normal">Jenis</th>
@@ -97,7 +97,7 @@ export default async function EventDashboardPage({ params }: { params: Promise<{
         <h2 id="harian" className="text-xl">
           Penjualan harian
         </h2>
-        <div className="mt-6 max-w-[640px]">
+        <div className="mt-6 max-w-160">
           <DailySalesChart data={stats.dailySales} />
         </div>
       </section>

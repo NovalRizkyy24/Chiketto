@@ -15,7 +15,7 @@ export default async function StudentVerificationPage({ searchParams }: { search
 
   return (
     <div className="page">
-      <div className="max-w-[480px]">
+      <div className="max-w-120">
         <h1 className="text-3xl">Verifikasi mahasiswa</h1>
         {user.studentVerifiedAt ? (
           <>

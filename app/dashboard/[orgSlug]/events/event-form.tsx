@@ -45,7 +45,7 @@ export function EventForm({
   const a = (k: string) => ({ "aria-invalid": Boolean(fe[k]), "aria-describedby": fe[k] ? `${k}-err` : undefined });
 
   return (
-    <form action={formAction} className="flex max-w-[560px] flex-col gap-6">
+    <form action={formAction} className="flex max-w-140 flex-col gap-6">
       <label className="field">
         <span className="label">Judul event</span>
         <input name="title" required defaultValue={v("title")} className="input" {...a("title")} />

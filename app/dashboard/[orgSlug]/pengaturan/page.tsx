@@ -8,7 +8,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ orgSl
     <>
       <h1 className="text-2xl">Pengaturan</h1>
       <OrgForm orgSlug={orgSlug} name={org.name} />
-      <dl className="mt-12 grid max-w-[480px] grid-cols-[8rem_minmax(0,1fr)] gap-y-2 text-sm">
+      <dl className="mt-12 grid max-w-120 grid-cols-[8rem_minmax(0,1fr)] gap-y-2 text-sm">
         <dt className="text-ink-3">Alamat</dt>
         <dd className="font-mono">{org.slug}</dd>
         <dt className="text-ink-3">Verifikasi</dt>

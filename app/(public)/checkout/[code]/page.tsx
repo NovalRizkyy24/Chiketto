@@ -23,7 +23,7 @@ export default async function CheckoutPage({ params }: { params: Promise<{ code:
 
   return (
     <div className="page">
-      <div className="max-w-[480px]">
+      <div className="max-w-120">
         <CheckoutView
           order={{
             code: order.code,

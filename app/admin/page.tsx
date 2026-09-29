@@ -52,9 +52,9 @@ export default async function AdminPage() {
         <h2 id="org" className="text-xl">
           Organisasi
         </h2>
-        <ul className="mt-4 max-w-[720px] border-t border-rule">
+        <ul className="mt-4 max-w-180 border-t border-rule">
           {orgs.map((o) => (
-            <li key={o.id} className="flex min-h-[56px] flex-wrap items-center justify-between gap-4 border-b border-rule py-2">
+            <li key={o.id} className="flex min-h-14 flex-wrap items-center justify-between gap-4 border-b border-rule py-2">
               <span className="break-anywhere">{o.name}</span>
               {o.verifiedAt ? (
                 <span className="text-sm text-ink-3">Terverifikasi</span>
@@ -75,7 +75,7 @@ export default async function AdminPage() {
         <h2 id="ev" className="text-xl">
           Event terbit
         </h2>
-        <ul className="mt-4 max-w-[720px] border-t border-rule">
+        <ul className="mt-4 max-w-180 border-t border-rule">
           {events.map((e) => (
             <li key={e.id} className="flex flex-wrap items-center justify-between gap-4 border-b border-rule py-3">
               <span className="min-w-0">

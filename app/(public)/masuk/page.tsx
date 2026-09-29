@@ -57,7 +57,7 @@ export default async function LoginPage({ searchParams }: Props) {
 
   return (
     <div className="page">
-      <div className="max-w-[420px]">
+      <div className="max-w-105">
         <h1 className="text-3xl">Masuk</h1>
         <p className="mt-3 text-ink-2">Masuk untuk membeli tiket dan membuka Tiket Saya.</p>
 
@@ -91,7 +91,7 @@ export default async function LoginPage({ searchParams }: Props) {
             <ul className="mt-2">
               {DEMO_ACCOUNTS.map((a) => (
                 <li key={a.email} className="border-b border-rule">
-                  <form action={demoLogin} className="flex min-h-[56px] items-center justify-between gap-4 py-2">
+                  <form action={demoLogin} className="flex min-h-14 items-center justify-between gap-4 py-2">
                     <input type="hidden" name="email" value={a.email} />
                     <span>
                       <span className="block">{a.label}</span>

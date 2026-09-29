@@ -19,11 +19,11 @@ export function DailySalesChart({ data }: { data: Point[] }) {
 
   return (
     <figure>
-      <div className="relative flex h-40 items-end gap-[2px] border-b border-rule" aria-hidden="true">
+      <div className="relative flex h-40 items-end gap-0.5 border-b border-rule" aria-hidden="true">
         {data.map((d, i) => (
           <div
             key={d.date}
-            className="group relative flex h-full min-w-[3px] max-w-3 flex-1 items-end"
+            className="group relative flex h-full min-w-0.75 max-w-3 flex-1 items-end"
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(null)}
           >
