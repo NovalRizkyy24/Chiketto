@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { CATEGORIES, availabilityOf, listPublicEvents, listQuerySchema } from "@/lib/events";
-import { formatBoardDate, formatDateLong, formatMonthYear } from "@/lib/format-date";
+import { CATEGORIES, availabilityOf, categoryLabel, listPublicEvents, listQuerySchema } from "@/lib/events";
+import { formatBoardDate, formatDateLong, formatMonthYear, formatTime } from "@/lib/format-date";
 import { formatRupiah } from "@/lib/format-rupiah";
+import { PosterThumb } from "@/components/poster-thumb";
 
 export const dynamic = "force-dynamic";
 
@@ -32,30 +33,35 @@ export default async function HomePage({ searchParams }: Props) {
       <h1 className="sr-only">Jadwal event kampus</h1>
 
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <nav aria-label="Kategori" className="flex flex-wrap items-center gap-x-1 text-sm">
-          {[{ value: undefined, label: "Semua" }, ...CATEGORIES].map((c, i) => {
+        {/* Jarak, bukan titik pemisah: saat baris patah di HP tidak ada "·" yang menggantung. */}
+        <nav aria-label="Kategori" className="flex flex-wrap items-center gap-x-5 text-sm">
+          {[{ value: undefined, label: "Semua" }, ...CATEGORIES].map((c) => {
             const active = params.kategori === c.value;
             return (
-              <span key={c.label} className="inline-flex items-center">
-                {i > 0 ? <span className="px-1.5 text-ink-3" aria-hidden="true">·</span> : null}
-                <Link
-                  href={href({ kategori: c.value, page: 1 })}
-                  aria-current={active ? "page" : undefined}
-                  className={`inline-flex min-h-11 items-center border-b-2 ${
-                    active ? "border-ink text-ink" : "border-transparent text-ink-2 hover:text-ink"
-                  }`}
-                >
-                  {c.label}
-                </Link>
-              </span>
+              <Link
+                key={c.label}
+                href={href({ kategori: c.value, page: 1 })}
+                aria-current={active ? "page" : undefined}
+                className={`inline-flex min-h-11 items-center whitespace-nowrap border-b-2 ${
+                  active ? "border-ink text-ink" : "border-transparent text-ink-2 hover:text-ink"
+                }`}
+              >
+                {c.label}
+              </Link>
             );
           })}
         </nav>
-        <form role="search" action="/" className="flex w-full items-end gap-2 md:w-64">
+        <form role="search" action="/" className="w-full md:w-72">
           {params.kategori ? <input type="hidden" name="kategori" value={params.kategori} /> : null}
           <label className="field w-full">
-            <span className="sr-only">Cari event</span>
-            <input name="q" defaultValue={params.q} placeholder="Cari event, tempat, penyelenggara" className="input" />
+            <span className="label">Cari</span>
+            <input
+              name="q"
+              type="search"
+              defaultValue={params.q}
+              placeholder="Judul, tempat, atau penyelenggara"
+              className="input"
+            />
           </label>
         </form>
       </div>
@@ -85,31 +91,52 @@ export default async function HomePage({ searchParams }: Props) {
               const soldOut = a.status === "habis";
               return (
                 <li key={e.id} className="border-b border-rule">
+                  {/* HP & tablet: poster · (tanggal, judul, info, harga). Mulai 1024px: tanggal · poster · judul & info · harga. */}
                   <Link
                     href={`/events/${e.slug}`}
-                    className="grid min-h-[72px] grid-cols-[64px_minmax(0,1fr)] gap-x-4 py-5 transition-colors duration-[var(--dur-fast)] hover:bg-paper-2 md:grid-cols-[120px_minmax(0,1fr)_auto] md:gap-x-8"
+                    className="group grid grid-cols-[104px_minmax(0,1fr)] gap-x-4 py-6 transition-colors duration-(--dur-fast) hover:bg-paper-2 min-[360px]:grid-cols-[112px_minmax(0,1fr)] sm:grid-cols-[136px_minmax(0,1fr)] sm:gap-x-6 md:grid-cols-[152px_minmax(0,1fr)] lg:grid-cols-[96px_152px_minmax(0,1fr)_auto] lg:gap-x-8 lg:py-8 xl:grid-cols-[112px_168px_minmax(0,1fr)_auto]"
                   >
-                    <span className="row-span-2 flex flex-col md:row-span-1">
-                      <span className="font-display text-date leading-none tabular" aria-hidden="true">
-                        {d.day}
-                      </span>
-                      <span className="mt-2 text-xs text-ink-3" aria-hidden="true">
-                        {d.sub}
-                      </span>
+                    <span className="hidden flex-col lg:col-start-1 lg:row-start-1 lg:flex" aria-hidden="true">
+                      <span className="font-display text-date leading-none tabular">{d.day}</span>
+                      <span className="mt-2 text-xs text-ink-3">{d.sub}</span>
                     </span>
-                    <span className="flex min-w-0 flex-col justify-center">
+
+                    <PosterThumb
+                      src={e.posterUrl}
+                      className={`col-start-1 row-start-1 self-start lg:col-start-2 ${soldOut ? "opacity-60" : ""}`}
+                    />
+
+                    <span className="col-start-2 row-start-1 flex min-w-0 flex-col lg:col-start-3 lg:pt-2">
                       <span className="sr-only">{formatDateLong(e.startsAt, tz)}. </span>
-                      <span className={`text-lg font-medium break-anywhere ${soldOut ? "text-ink-3" : ""}`}>
+                      <span className="mb-3 flex items-baseline gap-2 lg:hidden" aria-hidden="true">
+                        <span className="font-display text-[2.5rem] leading-none tabular">{d.day}</span>
+                        <span className="text-xs text-ink-3">{d.sub}</span>
+                      </span>
+                      <span
+                        className={`text-lg font-medium leading-snug break-anywhere lg:text-xl ${soldOut ? "text-ink-3" : "group-hover:underline group-hover:underline-offset-4"}`}
+                      >
                         {e.title}
                       </span>
-                      <span className="text-sm text-ink-3 break-anywhere">
+                      <span className="mt-1 text-sm text-ink-3 break-anywhere">
                         {e.org.name} · {e.venue}
                       </span>
+                      <span className="mt-1 hidden text-sm text-ink-3 sm:block">
+                        {categoryLabel(e.category)} · pukul <span className="font-mono tabular">{formatTime(e.startsAt, tz)}</span>
+                      </span>
+                      <span className="mt-3 flex flex-wrap items-baseline gap-x-3 lg:hidden">
+                        <span className="whitespace-nowrap font-mono text-base tabular">{priceLabel}</span>
+                        {a.status === "sisa-sedikit" ? (
+                          <span className="text-sm font-medium text-ink">Sisa sedikit</span>
+                        ) : soldOut ? (
+                          <span className="text-sm text-ink-3">Habis</span>
+                        ) : null}
+                      </span>
                     </span>
-                    <span className="mt-2 flex items-baseline gap-3 md:mt-0 md:flex-col md:items-end md:justify-center md:gap-0">
-                      <span className="font-mono text-base tabular">{priceLabel}</span>
+
+                    <span className="hidden lg:col-start-4 lg:row-start-1 lg:flex lg:flex-col lg:items-end lg:pt-2">
+                      <span className="whitespace-nowrap font-mono text-lg tabular">{priceLabel}</span>
                       {a.status === "sisa-sedikit" ? (
-                        <span className="text-sm text-accent">Sisa sedikit</span>
+                        <span className="text-sm font-medium text-ink">Sisa sedikit</span>
                       ) : soldOut ? (
                         <span className="text-sm text-ink-3">Habis</span>
                       ) : null}

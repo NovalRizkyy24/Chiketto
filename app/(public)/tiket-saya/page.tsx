@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ETicket } from "@/components/e-ticket";
 import { db } from "@/lib/db";
+import { formatDateLong, formatTime } from "@/lib/format-date";
 import { requireUserPage } from "@/lib/permissions";
 import { myTickets } from "@/lib/tickets";
 import { OfflineReady } from "./offline-ready";
@@ -68,11 +69,34 @@ export default async function MyTicketsPage() {
           <h2 id="riwayat" className="text-xl">
             Riwayat
           </h2>
-          <div className="mt-6 flex max-w-[760px] flex-col gap-10">
-            {history.map((t) => (
-              <ETicket key={t.id} t={t} />
-            ))}
-          </div>
+          {/* Riwayat ringkas: QR event yang sudah lewat tidak berguna, jadi tidak ditampilkan. */}
+          <ul className="mt-4 max-w-[760px] border-t border-rule">
+            {history.map((t) => {
+              const tz = t.event.org.campus.timezone;
+              const status =
+                t.status === "CHECKED_IN" && t.checkedInAt
+                  ? `Masuk pukul ${formatTime(t.checkedInAt, tz)}`
+                  : t.status === "VOID" || t.event.status === "CANCELLED"
+                    ? "Dibatalkan"
+                    : "Tidak dipakai";
+              return (
+                <li
+                  key={t.id}
+                  className="grid gap-x-6 gap-y-1 border-b border-rule py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-baseline"
+                >
+                  <div className="min-w-0">
+                    <p className="font-medium break-anywhere">{t.event.title}</p>
+                    <p className="text-sm text-ink-3">
+                      {formatDateLong(t.event.startsAt, tz, false)} · {t.ticketType.name}
+                    </p>
+                  </div>
+                  <p className="text-sm text-ink-2 sm:text-right">
+                    {status} <span className="font-mono text-ink-3">· {t.code}</span>
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
         </section>
       ) : null}
 

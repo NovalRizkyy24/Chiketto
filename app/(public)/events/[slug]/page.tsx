@@ -6,6 +6,7 @@ import { formatDateLong, formatDateShort } from "@/lib/format-date";
 import { currentUser } from "@/lib/permissions";
 import { countHeldTickets } from "@/lib/orders/create-order";
 import { remainingAllowance } from "@/lib/orders/rules";
+import { TypePoster } from "@/components/type-poster";
 import { TicketPicker, type PickerTicketType } from "./ticket-picker";
 
 export const dynamic = "force-dynamic";
@@ -67,20 +68,27 @@ export default async function EventPage({ params }: Props) {
     <div className="page">
       <div className="grid gap-10 md:grid-cols-8 md:gap-x-8 xl:grid-cols-12">
         <div className="md:col-span-3 xl:col-span-5">
-          <div className="aspect-[4/5] w-full border border-rule bg-paper-2">
-            {event.posterUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
+          {event.posterUrl ? (
+            <div className="aspect-4/5 w-full border border-rule bg-paper-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={event.posterUrl}
                 alt={event.posterAlt || `Poster ${event.title}`}
                 className="h-full w-full object-cover"
               />
-            ) : (
-              <div className="flex h-full items-end p-6" role="img" aria-label={`Poster ${event.title}`}>
-                <span className="font-display text-2xl text-ink-3 break-anywhere">{event.title}</span>
-              </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            // Tanpa gambar: lebih pendek di HP supaya judul & tombol beli tidak terdorong jauh ke bawah.
+            <div className="w-full border border-rule md:aspect-4/5">
+              <TypePoster
+                title={event.title}
+                org={event.org.name}
+                category={categoryLabel(event.category)}
+                startsAt={event.startsAt}
+                tz={tz}
+              />
+            </div>
+          )}
         </div>
 
         <div className="md:col-span-5 xl:col-span-6">

@@ -33,7 +33,7 @@ export default async function AttendeesPage({ params, searchParams }: Props) {
         <p className="mt-6 text-ink-2">Belum ada event yang terbit.</p>
       ) : (
         <>
-          <form className="mt-8 grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(0,2fr)_minmax(0,1fr)_auto] sm:items-end">
+          <form className="mt-8 grid gap-4 sm:grid-cols-2 sm:items-end xl:grid-cols-[minmax(0,2fr)_minmax(0,2fr)_minmax(0,1fr)_auto]">
             <label className="field">
               <span className="label">Event</span>
               <select name="event" defaultValue={eventId} className="input">
@@ -57,7 +57,7 @@ export default async function AttendeesPage({ params, searchParams }: Props) {
                 <option value="VOID">Dibatalkan</option>
               </select>
             </label>
-            <button type="submit" className="btn btn-secondary">
+            <button type="submit" className="btn btn-secondary sm:justify-self-start">
               Tampilkan
             </button>
           </form>

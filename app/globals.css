@@ -1,3 +1,9 @@
+/* Hallmark · design system: chiketto-design.md · genre: editorial · theme: custom (tuned)
+ * vibe: "washi, sumi, ruang kosong, stempel merah, papan jadwal"
+ * paper oklch(96.5% 0.008 85) · accent oklch(53% 0.17 35) shu
+ * display: Shippori Mincho B1 · body: Zen Kaku Gothic New · figures: DM Mono
+ * macrostructure: Timetable / Long List · nav: N9 Edge-aligned · footer: Ft5 Statement
+ */
 @import "tailwindcss";
 @import "./tokens.css";
 
@@ -147,7 +153,9 @@ h3,
   .btn-secondary:hover:not(:disabled) {
     background: var(--color-paper-2);
   }
+  /* Padding vertikal memperbesar area sentuh ke ≥ 44px tanpa mengubah tampilan teks. */
   .btn-text {
+    padding-block: 12px;
     color: var(--color-ink);
     text-decoration: underline;
     text-decoration-thickness: 1px;

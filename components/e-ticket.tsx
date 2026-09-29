@@ -41,7 +41,7 @@ export function ETicket({ t, pdfHref }: { t: ETicketData; pdfHref?: string }) {
         <h3 className={`text-xl ${isVoid ? "text-ink-3" : ""}`}>{t.event.title}</h3>
         <p className="mt-5 text-sm">{formatDateLong(t.event.startsAt, tz)}</p>
         <p className="text-sm">{t.event.venue}</p>
-        <p className={`mt-5 text-sm ${isVoid || checkedIn ? "" : "text-accent"}`}>
+        <p className="mt-5 text-sm">
           {t.ticketType.name} · {formatRupiah(t.ticketType.price)}
         </p>
         <p className="text-sm">{t.holderName}</p>

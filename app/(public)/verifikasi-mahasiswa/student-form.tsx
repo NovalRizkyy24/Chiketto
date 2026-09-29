@@ -64,7 +64,7 @@ export function StudentForm({ back }: { back: string }) {
       ) : (
         <form action={confirm} className="flex flex-col gap-4">
           <p className="text-ink-2">
-            Kode dikirim ke <span className="font-mono">{sentTo}</span>. Berlaku 10 menit.
+            Kode dikirim ke <span className="font-mono break-anywhere">{sentTo}</span>. Berlaku 10 menit.
           </p>
           <label className="field">
             <span className="label">Kode verifikasi</span>

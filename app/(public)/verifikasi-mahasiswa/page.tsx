@@ -20,7 +20,7 @@ export default async function StudentVerificationPage({ searchParams }: { search
         {user.studentVerifiedAt ? (
           <>
             <p className="mt-4 text-ink-2">
-              Status mahasiswa kamu sudah terverifikasi lewat <span className="font-mono">{user.studentEmail}</span>.
+              Status mahasiswa kamu sudah terverifikasi lewat <span className="font-mono break-anywhere">{user.studentEmail}</span>.
             </p>
             <Link href={back} className="btn btn-secondary mt-8">
               Kembali

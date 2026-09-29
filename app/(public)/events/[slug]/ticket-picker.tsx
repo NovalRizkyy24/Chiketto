@@ -88,8 +88,8 @@ export function TicketPicker(p: Props) {
           const plusDisabled = !buyable || atLimit || n >= t.remaining;
           return (
             <li key={t.id} className="border-b border-rule py-5">
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0 break-anywhere">
+              <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+                <div className="min-w-[9rem] flex-1 [overflow-wrap:anywhere]">
                   <p className={`font-medium ${buyable ? "" : "text-ink-3"}`}>{t.name}</p>
                   <p className="text-sm text-ink-3">{t.note}</p>
                 </div>
@@ -166,7 +166,7 @@ export function TicketPicker(p: Props) {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-xs text-ink-3">Total</p>
-            <p className="font-mono text-2xl tabular text-accent" aria-live="polite">
+            <p className={`font-mono text-2xl tabular ${count === 0 ? "text-ink-3" : "text-accent"}`} aria-live="polite">
               {count === 0 ? "—" : formatRupiah(total)}
             </p>
           </div>
