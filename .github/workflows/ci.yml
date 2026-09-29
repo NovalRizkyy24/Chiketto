@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: chiketto
+          POSTGRES_PASSWORD: chiketto
+          POSTGRES_DB: chiketto_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U chiketto"
+          --health-interval 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://chiketto:chiketto@localhost:5432/chiketto_test
+      TEST_DATABASE_URL: postgresql://chiketto:chiketto@localhost:5432/chiketto_test
+      QR_SECRET: ci-secret-yang-cukup-panjang-untuk-hmac
+      AUTH_SECRET: ci-auth-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx prisma generate
+      - run: npm run typecheck
+      - run: npx prisma migrate deploy
+      - name: Unit test
+        run: npm test
+      - name: Integration test (konkurensi kuota, idempotensi webhook, check-in ganda)
+        run: npm run test:integration
+      - run: npm run build

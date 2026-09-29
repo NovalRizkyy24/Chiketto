@@ -1,0 +1,81 @@
+/* Token resmi dari chiketto-design.md §15. Jangan menambah warna/jarak di luar file ini. */
+:root {
+  --color-paper: oklch(96.5% 0.008 85);
+  --color-paper-2: oklch(93.5% 0.01 85);
+  --color-paper-3: oklch(90% 0.012 85);
+  --color-ink: oklch(21% 0.012 260);
+  --color-ink-2: oklch(42% 0.01 260);
+  --color-ink-3: oklch(52% 0.008 260);
+  --color-rule: oklch(86% 0.008 85);
+  --color-rule-strong: oklch(21% 0.012 260);
+  --color-accent: oklch(53% 0.17 35);
+  --color-ok: oklch(46% 0.1 155);
+  --color-warn: oklch(82% 0.13 80);
+  --color-focus: var(--color-accent);
+
+  /* Permukaan QR: tetap terang di mode gelap agar selalu terbaca scanner. */
+  --color-qr-surface: oklch(93.5% 0.01 85);
+  /* Teks di atas verdict ok/accent/ink: selalu washi terang. */
+  --color-on-verdict: oklch(96.5% 0.008 85);
+  --color-on-warn: oklch(21% 0.012 260);
+
+  /* next/font menyuntikkan --font-shippori, --font-zen, --font-dm-mono */
+  --font-display: var(--font-shippori), "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+  --font-body: var(--font-zen), "Zen Kaku Gothic New", "Hiragino Sans", system-ui, sans-serif;
+  --font-mono: var(--font-dm-mono), "DM Mono", ui-monospace, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: clamp(2rem, 6vw, 3rem);
+  --text-date: clamp(2.5rem, 9vw, 4rem);
+  --text-verdict: clamp(2.5rem, 12vw, 5rem);
+
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-xs: 12px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 64px;
+  --space-2xl: 96px;
+  --space-3xl: 144px;
+
+  --rule-hair: 1px solid var(--color-rule);
+  --rule-ink: 1px solid var(--color-rule-strong);
+  --rule-perforation: 1px dashed var(--color-rule-strong);
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-full: 9999px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms;
+  --dur-base: 220ms;
+  --dur-slow: 360ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-paper: oklch(17% 0.006 260);
+    --color-paper-2: oklch(21% 0.008 260);
+    --color-paper-3: oklch(26% 0.01 260);
+    --color-ink: oklch(93% 0.008 85);
+    --color-ink-2: oklch(78% 0.008 85);
+    --color-ink-3: oklch(66% 0.008 85);
+    --color-rule: oklch(30% 0.008 260);
+    --color-rule-strong: oklch(93% 0.008 85);
+    --color-accent: oklch(70% 0.15 38);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-base: 120ms;
+    --dur-slow: 150ms;
+  }
+}

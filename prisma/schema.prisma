@@ -1,0 +1,274 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Campus {
+  id          String         @id @default(cuid())
+  name        String
+  emailDomain String         @unique // contoh: student.unand.ac.id
+  timezone    String         @default("Asia/Jakarta")
+  orgs        Organization[]
+  users       User[]
+}
+
+model User {
+  id                String    @id @default(cuid())
+  name              String?
+  email             String    @unique
+  emailVerified     DateTime?
+  image             String?
+  campusId          String?
+  campus            Campus?   @relation(fields: [campusId], references: [id])
+  studentEmail      String?   @unique
+  studentVerifiedAt DateTime?
+  isPlatformAdmin   Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+
+  accounts             Account[]
+  sessions             Session[]
+  memberships          Membership[]
+  crewAssignments      EventCrew[]
+  orders               Order[]
+  tickets              Ticket[]               @relation("TicketOwner")
+  checkIns             Ticket[]               @relation("TicketCheckedInBy")
+  studentVerifications StudentVerification[]
+}
+
+// Tabel standar Auth.js
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model StudentVerification {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email       String
+  codeHash    String
+  attempts    Int       @default(0)
+  expiresAt   DateTime
+  consumedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Organization {
+  id         String       @id @default(cuid())
+  campusId   String
+  campus     Campus       @relation(fields: [campusId], references: [id])
+  name       String // contoh: HIMA Sistem Informasi
+  slug       String       @unique
+  verifiedAt DateTime?
+  createdAt  DateTime     @default(now())
+  members    Membership[]
+  events     Event[]
+}
+
+model Membership {
+  id     String       @id @default(cuid())
+  userId String
+  orgId  String
+  role   OrgRole
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org    Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+}
+
+model Event {
+  id          String        @id @default(cuid())
+  orgId       String
+  org         Organization  @relation(fields: [orgId], references: [id])
+  slug        String        @unique
+  title       String
+  category    EventCategory
+  description String
+  posterUrl   String?
+  posterAlt   String?
+  venue       String
+  startsAt    DateTime
+  endsAt      DateTime
+  status      EventStatus   @default(DRAFT)
+  maxPerUser  Int           @default(4)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  ticketTypes TicketType[]
+  crew        EventCrew[]
+  orders      Order[]
+  tickets     Ticket[]
+
+  @@index([status, startsAt])
+}
+
+// Panitia yang boleh memindai event ini
+model EventCrew {
+  eventId String
+  userId  String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, userId])
+}
+
+model TicketType {
+  id          String      @id @default(cuid())
+  eventId     String
+  event       Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name        String // Presale, Regular, VIP
+  description String?
+  price       Int // Rupiah, 0 = gratis
+  quota       Int
+  reserved    Int         @default(0)
+  sold        Int         @default(0)
+  studentOnly Boolean     @default(false)
+  salesStart  DateTime
+  salesEnd    DateTime
+  sortOrder   Int         @default(0)
+  orderItems  OrderItem[]
+  tickets     Ticket[]
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  code            String      @unique // CHK-24A7Q9, ditampilkan ke pembeli
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  eventId         String
+  event           Event       @relation(fields: [eventId], references: [id])
+  status          OrderStatus @default(PENDING)
+  total           Int
+  expiresAt       DateTime
+  paidAt          DateTime?
+  snapToken       String?
+  snapRedirectUrl String?
+  items           OrderItem[]
+  payments        Payment[]
+  tickets         Ticket[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([status, expiresAt])
+  @@index([userId, eventId, status])
+}
+
+model OrderItem {
+  id           String     @id @default(cuid())
+  orderId      String
+  order        Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  ticketTypeId String
+  ticketType   TicketType @relation(fields: [ticketTypeId], references: [id])
+  qty          Int
+  unitPrice    Int
+}
+
+model Payment {
+  id         String   @id @default(cuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+  gatewayRef String   @unique // transaction_id Midtrans
+  method     String? // qris, bca_va, gopay, ...
+  status     String
+  rawPayload Json
+  receivedAt DateTime @default(now())
+}
+
+model Ticket {
+  id              String       @id @default(cuid())
+  code            String       @unique // kode pendek untuk input manual
+  orderId         String
+  order           Order        @relation(fields: [orderId], references: [id])
+  ticketTypeId    String
+  ticketType      TicketType   @relation(fields: [ticketTypeId], references: [id])
+  eventId         String
+  event           Event        @relation(fields: [eventId], references: [id])
+  ownerId         String
+  owner           User         @relation("TicketOwner", fields: [ownerId], references: [id])
+  holderName      String
+  status          TicketStatus @default(ACTIVE)
+  checkedInAt     DateTime?
+  checkedInBy     String?
+  checkedInByUser User?        @relation("TicketCheckedInBy", fields: [checkedInBy], references: [id])
+  createdAt       DateTime     @default(now())
+
+  @@index([eventId, status])
+  @@index([ownerId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  action    String // order.paid, ticket.checkin, event.publish, ...
+  targetId  String
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([targetId])
+}
+
+enum OrgRole {
+  ORGANIZER
+  CREW
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  ENDED
+  CANCELLED
+}
+
+enum EventCategory {
+  KONSER
+  SEMINAR
+  WORKSHOP
+  LOMBA
+  LAINNYA
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  EXPIRED
+  CANCELLED
+  REFUNDED
+}
+
+enum TicketStatus {
+  ACTIVE
+  CHECKED_IN
+  VOID
+}
